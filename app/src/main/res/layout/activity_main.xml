@@ -7,6 +7,13 @@
 	android:layout_height="match_parent"
 	tools:context=".MainActivity">
 
+	<Button
+		android:id="@+id/addButton"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/add_contact"
+		android:padding="16dp" />
+
 	<ListView
 		android:id="@+id/listContacts"
 		android:layout_width="0dp"

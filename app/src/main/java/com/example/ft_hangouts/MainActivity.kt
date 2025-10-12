@@ -1,15 +1,20 @@
 package com.example.ft_hangouts
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ListView
 import android.widget.SimpleAdapter
-import android.app.Activity
+import com.example.ft_hangouts.database.ContactDatabaseHelper
+import com.example.ft_hangouts.model.Contact
+import com.example.ft_hangouts.repository.ContactRepository
 import com.example.ft_hangouts.viewmodel.ContactViewModel
 
-class Mainactivity : Activity() {
+class MainActivity : Activity() {
 	private lateinit var viewModel: ContactViewModel
 	private lateinit var listView: ListView
 	private lateinit var adapter: SimpleAdapter
+	private lateinit var addButton: android.widget.Button
 
 	// L'observer qui réagira aux changements de données
 	private val contactsObserver = object : Observer<List<Contact>> {
@@ -24,8 +29,14 @@ class Mainactivity : Activity() {
 
 		// Récupération du ViewModel existant ou création d'un nouveau
 		viewModel = getLastNonConfigurationInstance() as? ContactViewModel
-			?: ContactViewModel()
+			?: run {
+				// Première création : initialiser le Repository avec la base de données
+				val dbHelper = ContactDatabaseHelper(this)
+				val repository = ContactRepository(dbHelper)
+				ContactViewModel(repository)
+			}
 
+		setupAddButton()
 		setupListView()
 
 		// Observation des contacts - dès qu'ils changent, l'UI se met à jour
@@ -47,6 +58,14 @@ class Mainactivity : Activity() {
 			viewModel.contacts.removeObserver(contactsObserver)
 	}
 
+	private fun setupAddButton() {
+		addButton = findViewById(R.id.addButton)
+		addButton.setOnClickListener {
+			val intent = Intent(this, AddContactActivity::class.java)
+			startActivity(intent)
+		}
+	}
+
 	private fun setupListView() {
 		listView = findViewById(R.id.listContacts)
 
@@ -66,9 +85,25 @@ class Mainactivity : Activity() {
 		listView.setOnItemClickListener { parent, view, position, id ->
 			val headerCount = listView.headerViewsCount
 			val realPos = position - headerCount
+
 			if (realPos >= 0) {
-				val item = adapter.getItem(realPos) as Map<*, *>
-				// ... TODO: GESTION CLIC
+				// Récupérer le contact cliqué
+				val item = adapter.getItem(realPos) as Map<String, String>
+				val contactName = item["name"] ?: ""
+
+				// Trouver le contact correspondant dans la liste du ViewModel
+				val contacts = viewModel.contacts.getValue()
+				val contact = contacts.find { it.name == contactName }
+
+				if (contact != null) {
+					// Sélectionner le contact dans le ViewModel
+					viewModel.selectContact(contact.id)
+
+					// Ouvrir l'écran de détails
+					val intent = Intent(this, ContactDetailActivity::class.java)
+					intent.putExtra("contact_id", contact.id)
+					startActivity(intent)
+				}
 			}
 		}
 	}
@@ -83,8 +118,9 @@ class Mainactivity : Activity() {
 		}
 
 		// Mise à jour de l'adapter
-		adapter.clear()
-		adapter.addAll(data)
-		adapter.notifyDataSetChanged()
+		val from = arrayOf("name", "phone")
+		val to = intArrayOf(android.R.id.text1, android.R.id.text2)
+		adapter = SimpleAdapter(this, data, android.R.layout.simple_list_item_2, from, to)
+		listView.adapter = adapter
 	}
 }

@@ -1,47 +1,63 @@
 package com.example.ft_hangouts.viewmodel
 
-class ContactViewModel {
+import com.example.ft_hangouts.model.Contact
+import com.example.ft_hangouts.Observer
+import com.example.ft_hangouts.Observable
+import com.example.ft_hangouts.repository.ContactRepository
+
+class ContactViewModel(private val repository: ContactRepository) {
 	private val _contacts = Observable<List<Contact>>(emptyList())
 	val contacts: Observable<List<Contact>> = _contacts
 
+	private val _selectedContact = Observable<Contact?>(null)
+	val selectedContact: Observable<Contact?> = _selectedContact
+
 	init {
-		loadInitialContacts()
+		loadContacts()
 	}
 
-	private fun loadInitialContacts() {
-		val initialContacts = listOf(
-			Contact(id = 1, name = "Alice", phone = "0600000000", email = "alice.bou@gmail.com", address = "n'importe où", note = "aaaa"),
-			Contact(id = 2, name = "BOB", phone = "06111111111", email = "BOBLEBRICOLEUR@orange.fr", address = "là", note = "bbbb")
-		)
-		_contacts.setValue(initialContacts)
+	private fun loadContacts() {
+		val contacts = repository.getAllContacts()
+		_contacts.setValue(contacts)
 	}
 
+	// Ajouter un contact
 	fun addContact(name: String, phone: String, email: String, address: String, note: String) {
-		val currentList = _contacts.getValue()
-		val newContact = Contact(
-			id = (currentList.maxOfOrNull { it.id } ?: 0) + 1,
-			name = name,
-			phone = phone,
-			email = email,
-			address = address,
-			note = note
-		)
-		_contacts.setValue(currentList + newContact)
+		val newId = repository.addContact(name, phone)
+		// Recharger la liste complète pour garder les données synchronisées
+		loadContacts()
 	}
 
-	fun deleteContact(contactId: Long) {
-		val currentList = _contacts.getValue()
-		_contacts.setValue(currentList.filter { it.id != contactId })
+	// Mettre à jour un contact
+	fun updateContact(id: Long, name: String, phone: String, email: String, address: String, note: String) {
+		repository.updateContact(id, name, phone, email, address, note)
+		// Recharger la liste
+		loadContacts()
+		// SI c'était le contact sélectionnée, le mettre à jour aussi
+		if (_selectedContact.getValue()?.id == id) {
+			selectContact(id)
+		}
 	}
 
-	fun updateContact(contactId: Long, newName: String, newPhone: String, newEmail: String, newAddress: String, newNote: String) {
-		val currentList = _contacts.getValue()
-		_contacts.setValue(currentList.map { contact ->
-			if (contact.id == contactId) {
-				contact.copy(name = newName, phone = newPhone, email = newEmail, address = newAddress, note = newNote)
-			} else {
-				contact
-			}
-		})
+	// Supprimer un contact
+	fun deleteContact(id: Long) {
+		repository.deleteContact(id)
+		// Recharger la liste
+		loadContacts()
+		// Si c'était le contact sélectionné, le désélectionner
+		if (_selectedContact.getValue()?.id == id) {
+			_selectedContact.setValue(null)
+		}
+	}
+
+	// Sélectionner un contact pour voir ses détails
+	fun selectContact(id: Long) {
+		val contact = repository.getContactById(id)
+		_selectedContact.setValue(contact)
+	}
+
+	// Désélectionner le contact actuel
+	fun clearSelectedContact() {
+		_selectedContact.setValue(null)
 	}
 }
