@@ -36,6 +36,8 @@ class AddContactActivity : AppCompatActivity() {
 		val editNickname = findViewById<EditText>(R.id.edit_contact_nickname)
 		val btnSave = findViewById<Button>(R.id.btn_save_contact)
 
+		val dbHelper = ContactsDbHelper(this)
+
 		btnSave.setOnClickListener {
 			val firstname = editFirstName.text.toString().trim()
 			val lastname = editLastName.text.toString().trim()
@@ -43,12 +45,19 @@ class AddContactActivity : AppCompatActivity() {
 			val email = editEmail.text.toString().trim()
 			val nickname = editNickname.text.toString().trim()
 
-			if (firstname.isEmpty())
-				Toast.makeText(this, "Le nom est obligatoire", Toast.LENGTH_SHORT).show()
-			else {
-				// TODO : sauvegarde dans la DB
-				Toast.makeText(this, "Contact '$firstname' créé", Toast.LENGTH_SHORT).show()
-				finish() // Retour à MainActivity
+			if (firstname.isEmpty()) {
+				Toast.makeText(this, getString(R.string.error_firstname_required), Toast.LENGTH_SHORT).show()
+				return@setOnClickListener
+			}
+
+			val newContact = Contact(firstname = firstname, lastname = lastname, phone = phone, email = email, nickname = nickname)
+			val insertedId = dbHelper.insertContact(newContact)
+
+			if (insertedId > 0) {
+				Toast.makeText(this, getString(R.string.success_contact_created), Toast.LENGTH_SHORT).show()
+				finish()
+			} else {
+				Toast.makeText(this, getString(R.string.error_contact_creation), Toast.LENGTH_SHORT).show()
 			}
 		}
 	}
