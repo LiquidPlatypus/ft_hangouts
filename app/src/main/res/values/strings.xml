@@ -12,4 +12,10 @@
     <string name="success_contact_created">Contact created</string>
     <string name="error_contact_creation">Error creating contact</string>
     <string name="toolbar_add_contact">Add Contact</string>
+    <string name="contact_fullname_placeholder">Firstname Lastname</string>
+    <string name="contact_phone_placeholder">Phone</string>
+    <string name="contact_email_placeholder">Email</string>
+    <string name="contact_nickname_placeholder">Nickname</string>
+
+    <string name="contact_fullname_format">%1$s %2$s</string>
 </resources>
