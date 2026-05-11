@@ -41,7 +41,7 @@
 						android:id="@+id/edit_contact_firstname"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:hint="Prénom"
+						android:hint="@string/edit_firstname"
 						android:inputType="text" />
 				</com.google.android.material.textfield.TextInputLayout>
 
@@ -54,7 +54,7 @@
 						android:id="@+id/edit_contact_lastname"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:hint="Nom"
+						android:hint="@string/edit_lastname"
 						android:inputType="text" />
 				</com.google.android.material.textfield.TextInputLayout>
 
@@ -67,7 +67,7 @@
 						android:id="@+id/edit_contact_phone"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:hint="Téléphone"
+						android:hint="@string/edit_phone"
 						android:inputType="phone" />
 				</com.google.android.material.textfield.TextInputLayout>
 
@@ -80,7 +80,7 @@
 						android:id="@+id/edit_contact_email"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:hint="Email"
+						android:hint="@string/edit_email"
 						android:inputType="textEmailAddress" />
 				</com.google.android.material.textfield.TextInputLayout>
 
@@ -93,7 +93,7 @@
 						android:id="@+id/edit_contact_nickname"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:hint="Surnom"
+						android:hint="@string/edit_nickname"
 						android:inputType="text" />
 				</com.google.android.material.textfield.TextInputLayout>
 
@@ -101,7 +101,7 @@
 					android:id="@+id/btn_save_contact"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:text="Enregistrer"
+					android:text="@string/btn_save"
 					android:textSize="16sp"
 					android:padding="12dp" />
 			</LinearLayout>

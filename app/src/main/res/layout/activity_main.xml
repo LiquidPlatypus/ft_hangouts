@@ -20,7 +20,7 @@
 			android:layout_height="?attr/actionBarSize"
 			android:background="?attr/colorPrimary"
 			android:theme="?attr/actionBarTheme"
-			app:title="Contacts" />
+			app:title="@string/toolbar_title" />
 
 	</LinearLayout>
 

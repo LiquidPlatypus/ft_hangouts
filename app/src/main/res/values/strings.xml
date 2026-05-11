@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">ft_hangouts</string>
+    <string name="toolbar_title">Contacts</string>
+    <string name="action_add_contact">Add</string>
+    <string name="edit_firstname">First Name</string>
+    <string name="edit_lastname">Last Name</string>
+    <string name="edit_phone">Phone</string>
+    <string name="edit_email">Email</string>
+    <string name="edit_nickname">Nickname</string>
+    <string name="btn_save">Save</string>
+    <string name="error_firstname_required">First name is required</string>
+    <string name="success_contact_created">Contact created</string>
+    <string name="error_contact_creation">Error creating contact</string>
+    <string name="toolbar_add_contact">Add Contact</string>
 </resources>
