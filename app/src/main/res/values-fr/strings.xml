@@ -18,4 +18,13 @@
 	<string name="contact_nickname_placeholder">Surnom</string>
 
 	<string name="contact_fullname_format">%1$s %2$s</string>
+
+	<string name="header_color">Couleur en-tête</string>
+	<string name="choose_color">Choisir la couleur</string>
+	<string name="color_hue">Teinte</string>
+	<string name="color_saturation">Saturation</string>
+	<string name="color_brightness">Luminosité</string>
+	<string name="hex_ffffffff">Hex: #FFFFFFFF</string>
+
+	<string name="add">Ajouter</string>
 </resources>
