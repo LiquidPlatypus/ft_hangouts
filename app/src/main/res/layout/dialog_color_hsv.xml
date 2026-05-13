@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content">
+	<LinearLayout
+		android:orientation="vertical"
+		android:padding="16dp"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+
+		<View
+			android:id="@+id/color_preview"
+			android:layout_width="match_parent"
+			android:layout_height="@dimen/color_preview_height"
+			android:layout_marginBottom="8dp" />
+
+		<TextView
+			android:id="@+id/hex_text"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/hex_ffffffff"
+			android:textStyle="bold"
+			android:layout_marginBottom="12dp" />
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/color_hue" />
+		<SeekBar
+			android:id="@+id/seek_h"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:max="360" />
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/color_saturation" />
+		<SeekBar
+			android:id="@+id/seek_s"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:max="100" />
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/color_brightness" />
+		<SeekBar
+			android:id="@+id/seek_v"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:max="100" />
+
+	</LinearLayout>
+</ScrollView>
