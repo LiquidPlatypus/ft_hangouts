@@ -42,6 +42,36 @@ class ContactsDbHelper(context: Context) : SQLiteOpenHelper(
 		return newId
 	}
 
+	fun getContact(id: Long): Contact? {
+		val db = readableDatabase
+		val cursor = db.query(
+			TABLE_CONTACTS,
+			arrayOf(COL_ID, COL_FIRSTNAME, COL_LASTNAME, COL_PHONE, COL_EMAIL, COL_NICKNAME),
+			"$COL_ID = ?",
+			arrayOf(id.toString()),
+			null,
+			null,
+			null
+		)
+
+		var contact: Contact? = null
+		cursor.use {
+			if (it.moveToFirst()) {
+				val idCol = it.getLong(it.getColumnIndexOrThrow(COL_ID))
+				val firstname = it.getString(it.getColumnIndexOrThrow(COL_FIRSTNAME))
+				val lastname = it.getString(it.getColumnIndexOrThrow(COL_LASTNAME)) ?: ""
+				val phone = it.getString(it.getColumnIndexOrThrow(COL_PHONE)) ?: ""
+				val email = it.getString(it.getColumnIndexOrThrow(COL_EMAIL)) ?: ""
+				val nickname = it.getString(it.getColumnIndexOrThrow(COL_NICKNAME)) ?: ""
+
+				contact = Contact(id = idCol, firstname = firstname, lastname = lastname, phone = phone, email = email, nickname = nickname)
+			}
+		}
+
+		db.close()
+		return contact
+	}
+
 	fun getAllContacts(): List<Contact> {
 		val contacts = mutableListOf<Contact>()
 		val db = readableDatabase
@@ -71,6 +101,26 @@ class ContactsDbHelper(context: Context) : SQLiteOpenHelper(
 
 		db.close()
 		return contacts
+	}
+
+	fun updateContact(contact: Contact): Int {
+		val db = writableDatabase
+		val values = ContentValues().apply {
+			put(COL_FIRSTNAME, contact.firstname)
+			put(COL_LASTNAME, contact.lastname)
+			put(COL_PHONE, contact.phone)
+			put(COL_EMAIL, contact.email)
+			put(COL_NICKNAME, contact.nickname)
+		}
+
+		val rows = db.update(
+			TABLE_CONTACTS,
+			values,
+			"$COL_ID = ?",
+			arrayOf(contact.id.toString())
+		)
+		db.close()
+		return rows
 	}
 
 	companion object {
