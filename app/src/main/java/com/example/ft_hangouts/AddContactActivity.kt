@@ -16,7 +16,6 @@ class AddContactActivity : AppCompatActivity() {
 		enableEdgeToEdge()
 		setContentView(R.layout.activity_add_contact)
 
-		// Toolbar avec flèche retour
 		val toolbar = findViewById<Toolbar>(R.id.toolbar_add)
 		setSupportActionBar(toolbar)
 		supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -28,7 +27,6 @@ class AddContactActivity : AppCompatActivity() {
 			insets
 		}
 
-		// Récup champs du form
 		val editFirstName = findViewById<EditText>(R.id.edit_contact_firstname)
 		val editLastName = findViewById<EditText>(R.id.edit_contact_lastname)
 		val editPhone = findViewById<EditText>(R.id.edit_contact_phone)
@@ -63,7 +61,7 @@ class AddContactActivity : AppCompatActivity() {
 	}
 
 	override fun onSupportNavigateUp(): Boolean {
-		finish() // Retour à la page précédente
+		finish()
 		return true
 	}
 }
