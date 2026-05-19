@@ -51,7 +51,11 @@ class MainActivity : AppCompatActivity() {
 
 		val recyclerView = findViewById<RecyclerView>(R.id.recycler_contacts)
 		recyclerView.layoutManager = LinearLayoutManager(this)
-		contactAdapter = ContactAdapter(emptyList())
+		contactAdapter = ContactAdapter(emptyList()) { contact ->
+			val intent = Intent(this, ContactDetailActivity::class.java)
+			intent.putExtra("contact_id", contact.id)
+			startActivity(intent)
+		}
 		recyclerView.adapter = contactAdapter
 	}
 
@@ -67,19 +71,9 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	private fun applyHeaderColorFromPrefs() {
-		val prefs = getSharedPreferences("settings", Context.MODE_PRIVATE)
-		val defaultColor = ContextCompat.getColor(this, R.color.header_background)
-		val color = prefs.getInt("header_color", defaultColor)
-
-		val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
-		toolbar.setBackgroundColor(color)
-
-		val textColor = if (ColorUtils.calculateLuminance(color) > 0.5) Color.BLACK else Color.WHITE
-		toolbar.setTitleTextColor(textColor)
-		toolbar.navigationIcon?.setTint(textColor)
-		for (i in 0 until toolbar.menu.size()) {
-			toolbar.menu.getItem(i).icon?.setTint(textColor)
-		}
+		val toolbar = findViewById<Toolbar>(R.id.toolbar)
+		val color = UiColorUtils.getHeaderColor(this)
+		UiColorUtils.applyToolbarColor(toolbar, color)
 	}
 
 	private fun showHSVColorPicker() {
