@@ -9,7 +9,6 @@ import android.view.View
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import androidx.core.graphics.ColorUtils
 import androidx.fragment.app.DialogFragment
 
 class ColorPickerDialogFragment: DialogFragment() {
