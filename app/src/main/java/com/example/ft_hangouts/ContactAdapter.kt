@@ -9,7 +9,8 @@ import java.text.Normalizer
 import java.util.*
 
 class ContactAdapter(
-	private var items: List<ListItem> = emptyList()
+	private var items: List<ListItem> = emptyList(),
+	private val onContactClick: (Contact) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 	sealed class ListItem {
@@ -53,6 +54,7 @@ class ContactAdapter(
 		when (val item = items[position]) {
 			is ListItem.Section -> {
 				(holder as SectionViewHolder).textSection.text = item.letter
+				holder.itemView.setOnClickListener(null)
 			}
 			is ListItem.ContactItem -> {
 				val contact = item.contact
@@ -62,6 +64,13 @@ class ContactAdapter(
 					contact.lastname
 				).trim()
 				(holder as ContactViewHolder).textFullname.text = fullname
+
+				holder.itemView.setOnClickListener {
+					val pos = holder.bindingAdapterPosition
+					if (pos != RecyclerView.NO_POSITION) {
+						onContactClick(contact)
+					}
+				}
 			}
 		}
 	}
