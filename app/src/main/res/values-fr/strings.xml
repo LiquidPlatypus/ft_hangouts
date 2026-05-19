@@ -27,4 +27,11 @@
 	<string name="hex_ffffffff">Hex: #FFFFFFFF</string>
 
 	<string name="add">Ajouter</string>
+	<string name="edit">Modifier</string>
+	<string name="details">Détails</string>
+
+	<string name="contact_not_found">Erreur : contact non trouvé</string>
+	<string name="toolbar_edit_contact">Modifier le contact</string>
+	<string name="success_contact_updated">Contact modifié</string>
+	<string name="error_contact_update">Erreur lors de la modification</string>
 </resources>
