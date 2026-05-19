@@ -24,6 +24,14 @@
             android:name=".AddContactActivity"
             android:exported="false">
         </activity>
+        <activity
+            android:name=".ContactDetailActivity"
+            android:exported="false">
+        </activity>
+        <activity
+            android:name=".EditContactActivity"
+            android:exported="false">
+        </activity>
     </application>
 
 </manifest>
