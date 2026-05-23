@@ -123,6 +123,13 @@ class ContactsDbHelper(context: Context) : SQLiteOpenHelper(
 		return rows
 	}
 
+	fun deleteContact(id: Long): Int {
+		val db = writableDatabase
+		val rowsDeleted = db.delete(TABLE_CONTACTS, "$COL_ID = ?", arrayOf(id.toString()))
+		db.close()
+		return rowsDeleted
+	}
+
 	companion object {
 		private const val DATABASE_NAME = "contacts.db"
 		private const val DATABASE_VERSION = 1
