@@ -1,6 +1,5 @@
 package com.example.ft_hangouts
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -11,7 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.get
+import androidx.appcompat.app.AlertDialog
+import android.widget.Toast
 
 class ContactDetailActivity : AppCompatActivity() {
 
@@ -75,6 +75,23 @@ class ContactDetailActivity : AppCompatActivity() {
 				val intent = Intent(this, EditContactActivity::class.java)
 				intent.putExtra("contact_id", contactId)
 				startActivity(intent)
+				true
+			}
+			R.id.action_delete_contact -> {
+				// Confirmation
+				AlertDialog.Builder(this)
+					.setMessage(getString(R.string.confirm_delete_contact))
+					.setPositiveButton(R.string.delete) { _, _ ->
+						val rows = dbHelper.deleteContact(contactId)
+						if (rows > 0) {
+							Toast.makeText(this, getString(R.string.success_contact_deleted), Toast.LENGTH_SHORT).show()
+							finish() // retourne à la liste — MainActivity.onResume() recharge la liste
+						} else {
+							Toast.makeText(this, getString(R.string.error_contact_delete), Toast.LENGTH_SHORT).show()
+						}
+					}
+					.setNegativeButton(android.R.string.cancel, null)
+					.show()
 				true
 			}
 			else -> super.onOptionsItemSelected(item)
