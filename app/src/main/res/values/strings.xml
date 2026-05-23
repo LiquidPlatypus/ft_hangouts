@@ -34,4 +34,8 @@
     <string name="toolbar_edit_contact">Edit Contact</string>
     <string name="success_contact_updated">Contact updated</string>
     <string name="error_contact_update">Error updating contact</string>
+    <string name="delete">Delete</string>
+    <string name="confirm_delete_contact">Do you really want to delete this contact?</string>
+    <string name="success_contact_deleted">Contact deleted</string>
+    <string name="error_contact_delete">Unable to delete this contact</string>
 </resources>
