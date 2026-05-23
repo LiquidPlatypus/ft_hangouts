@@ -62,6 +62,8 @@ class ContactDetailActivity : AppCompatActivity() {
 
 	override fun onCreateOptionsMenu(menu: Menu): Boolean {
 		menuInflater.inflate(R.menu.menu_contact_detail, menu)
+		val toolbar = findViewById<Toolbar>(R.id.toolbar_detail)
+		UiColorUtils.applyToolbarColor(toolbar, UiColorUtils.getHeaderColor(this))
 		return true
 	}
 

@@ -7,6 +7,7 @@ import android.widget.Button
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
+import androidx.core.graphics.drawable.DrawableCompat
 
 object UiColorUtils {
 
@@ -29,10 +30,17 @@ object UiColorUtils {
 
 		val textColor = getContrastingTextColor(color)
 		toolbar.setTitleTextColor(textColor)
-		toolbar.navigationIcon?.setTint(textColor)
+
+		toolbar.navigationIcon?.let {
+			DrawableCompat.setTint(DrawableCompat.wrap(it), textColor)
+		}
+
+		toolbar.overflowIcon?.let {
+			DrawableCompat.setTint(DrawableCompat.wrap(it), textColor)
+		}
 
 		for (i in 0 until toolbar.menu.size()) {
-			toolbar.menu.getItem(i).icon?.setTint(textColor)
+			toolbar.menu.getItem(i).icon?.let { DrawableCompat.setTint(DrawableCompat.wrap(it), textColor) }
 		}
 	}
 

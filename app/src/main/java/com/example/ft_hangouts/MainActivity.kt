@@ -83,6 +83,8 @@ class MainActivity : AppCompatActivity() {
 
 	override fun onCreateOptionsMenu(menu: Menu): Boolean {
 		menuInflater.inflate(R.menu.menu_toolbar, menu)
+		val toolbar = findViewById<Toolbar>(R.id.toolbar)
+		UiColorUtils.applyToolbarColor(toolbar, UiColorUtils.getHeaderColor(this))
 		return true
 	}
 
