@@ -12,6 +12,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import android.graphics.Color
+import android.view.MenuItem
 
 class ChatActivity : AppCompatActivity() {
 
@@ -38,6 +39,25 @@ class ChatActivity : AppCompatActivity() {
 		}
 
 		messagesDb = MessageDbHelper(this)
+		val contactsDb = ContactsDbHelper(this)
+
+		val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
+		setSupportActionBar(toolbar)
+
+		val contact = contactsDb.getContact(contactId)
+		if (contact != null) {
+			supportActionBar?.title = contact.firstname + " " + contact.lastname
+		}
+
+		supportActionBar?.setDisplayHomeAsUpEnabled(true)
+		supportActionBar?.setDisplayShowHomeEnabled(true)
+
+		val color = UiColorUtils.getHeaderColor(this)
+		UiColorUtils.applyToolbarColor(toolbar, color)
+		window.statusBarColor = color
+		val controller = WindowInsetsControllerCompat(window, window.decorView)
+		val lightIcons = UiColorUtils.getContrastingTextColor(color) == Color.WHITE
+		controller.isAppearanceLightStatusBars = !lightIcons
 
 		recyclerView = findViewById(R.id.recycler_chat)
 		recyclerView.layoutManager = LinearLayoutManager(this)
@@ -47,12 +67,7 @@ class ChatActivity : AppCompatActivity() {
 		val input = findViewById<EditText>(R.id.edit_message)
 		val sendBtn = findViewById<Button>(R.id.button_send)
 
-		val color = UiColorUtils.getHeaderColor(this)
 		UiColorUtils.applyButtonColor(sendBtn, color)
-		window.statusBarColor = color
-		val controller = WindowInsetsControllerCompat(window, window.decorView)
-		val lightIcons = UiColorUtils.getContrastingTextColor(color) == Color.WHITE
-		controller.isAppearanceLightStatusBars = !lightIcons
 
 		sendBtn.setOnClickListener {
 			val text = input.text.toString().trim()
@@ -63,7 +78,6 @@ class ChatActivity : AppCompatActivity() {
 				input.text.clear()
 				refreshMessages()
 
-				// SImulation de réception auto après 1s
 				handler.postDelayed({
 					val reply = Message(contactId = contactId, body = "Réponse auto à: ${text.take(30)}", timestamp = System.currentTimeMillis(), isSent = false)
 					messagesDb.insertMessage(reply)
@@ -73,6 +87,16 @@ class ChatActivity : AppCompatActivity() {
 		}
 
 		refreshMessages()
+	}
+
+	override fun onOptionsItemSelected(item: MenuItem): Boolean {
+		return when (item.itemId) {
+			android.R.id.home -> {
+				finish()
+				true
+			}
+			else -> super.onOptionsItemSelected(item)
+		}
 	}
 
 	private fun refreshMessages() {

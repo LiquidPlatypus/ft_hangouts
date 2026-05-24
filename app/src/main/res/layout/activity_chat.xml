@@ -6,6 +6,13 @@
 	android:orientation="vertical"
 	android:fitsSystemWindows="true">
 
+	<androidx.appcompat.widget.Toolbar
+		android:id="@+id/toolbar"
+		android:layout_width="match_parent"
+		android:layout_height="?attr/actionBarSize"
+		android:background="?attr/colorPrimary"
+		android:elevation="4dp" />
+
 	<androidx.recyclerview.widget.RecyclerView
 		android:id="@+id/recycler_chat"
 		android:layout_width="match_parent"
