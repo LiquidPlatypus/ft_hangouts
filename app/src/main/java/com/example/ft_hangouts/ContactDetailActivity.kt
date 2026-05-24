@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
+import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -12,6 +13,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.appcompat.app.AlertDialog
 import android.widget.Toast
+import androidx.core.view.WindowInsetsControllerCompat
+import android.graphics.Color
 
 class ContactDetailActivity : AppCompatActivity() {
 
@@ -58,6 +61,17 @@ class ContactDetailActivity : AppCompatActivity() {
 		findViewById<TextView>(R.id.text_detail_phone_value).text = c.phone.ifBlank { "—" }
 		findViewById<TextView>(R.id.text_detail_email_value).text = c.email.ifBlank { "—" }
 		findViewById<TextView>(R.id.text_detail_nickname_value).text = c.nickname.ifBlank { "—" }
+
+		val messageBtn = findViewById<Button?>(R.id.button_message)
+		messageBtn?.let { btn ->
+			UiColorUtils.applyButtonColor(btn, UiColorUtils.getHeaderColor(this))
+			btn.setOnClickListener {
+				val intent = Intent(this, ChatActivity::class.java).apply {
+					putExtra("contact_id", contactId)
+				}
+				startActivity(intent)
+			}
+		}
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -87,7 +101,7 @@ class ContactDetailActivity : AppCompatActivity() {
 						val rows = dbHelper.deleteContact(contactId)
 						if (rows > 0) {
 							Toast.makeText(this, getString(R.string.success_contact_deleted), Toast.LENGTH_SHORT).show()
-							finish() // retourne à la liste — MainActivity.onResume() recharge la liste
+							finish()
 						} else {
 							Toast.makeText(this, getString(R.string.error_contact_delete), Toast.LENGTH_SHORT).show()
 						}
@@ -117,5 +131,12 @@ class ContactDetailActivity : AppCompatActivity() {
 		val toolbar = findViewById<Toolbar>(R.id.toolbar_detail)
 		val color = UiColorUtils.getHeaderColor(this)
 		UiColorUtils.applyToolbarColor(toolbar, color)
+
+		window.statusBarColor = color
+		val controller = WindowInsetsControllerCompat(window, window.decorView)
+		val lightIcons = UiColorUtils.getContrastingTextColor(color) == Color.WHITE
+		controller.isAppearanceLightStatusBars = !lightIcons
+
+		findViewById<Button?>(R.id.button_message)?.let { UiColorUtils.applyButtonColor(it, color) }
 	}
 }
