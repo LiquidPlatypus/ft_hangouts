@@ -38,4 +38,8 @@
 	<string name="confirm_delete_contact">Voulez-vous vraiment supprimer ce contact ?</string>
 	<string name="success_contact_deleted">Contact supprimé</string>
 	<string name="error_contact_delete">Impossible de supprimer le contact</string>
+
+	<string name="message">Message</string>
+	<string name="write_message">Écrire un message</string>
+	<string name="send_message">Envoyer</string>
 </resources>
