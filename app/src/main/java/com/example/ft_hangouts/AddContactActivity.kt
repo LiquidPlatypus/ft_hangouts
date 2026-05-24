@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
+import android.graphics.Color
 
 class AddContactActivity : AppCompatActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,6 +23,16 @@ class AddContactActivity : AppCompatActivity() {
 		supportActionBar?.setDisplayHomeAsUpEnabled(true)
 		supportActionBar?.setDisplayShowHomeEnabled(true)
 
+		val headerColor = UiColorUtils.getHeaderColor(this)
+		UiColorUtils.applyToolbarColor(toolbar, headerColor)
+
+		window.statusBarColor = headerColor
+		val controller = WindowInsetsControllerCompat(window, window.decorView)
+		controller.isAppearanceLightStatusBars = UiColorUtils.getContrastingTextColor(headerColor) == Color.BLACK
+
+		val btnSave = findViewById<Button>(R.id.btn_save_contact)
+		UiColorUtils.applyButtonColor(btnSave, headerColor)
+
 		ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.add_contact_container)) { v, insets ->
 			val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
 			v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -32,7 +44,6 @@ class AddContactActivity : AppCompatActivity() {
 		val editPhone = findViewById<EditText>(R.id.edit_contact_phone)
 		val editEmail = findViewById<EditText>(R.id.edit_contact_email)
 		val editNickname = findViewById<EditText>(R.id.edit_contact_nickname)
-		val btnSave = findViewById<Button>(R.id.btn_save_contact)
 
 		val dbHelper = ContactsDbHelper(this)
 
