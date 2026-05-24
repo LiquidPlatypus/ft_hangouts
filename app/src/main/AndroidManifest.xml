@@ -32,6 +32,11 @@
             android:name=".EditContactActivity"
             android:exported="false">
         </activity>
+        <activity
+            android:name=".ChatActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize">
+        </activity>
     </application>
 
 </manifest>
