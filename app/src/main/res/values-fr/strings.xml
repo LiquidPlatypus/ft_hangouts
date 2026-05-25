@@ -42,4 +42,6 @@
 	<string name="message">Message</string>
 	<string name="write_message">Écrire un message</string>
 	<string name="send_message">Envoyer</string>
+
+	<string name="background_time_toast">Application envoyée en arrière-plan à : %1$s</string>
 </resources>

@@ -1,9 +1,11 @@
 package com.example.ft_hangouts
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -11,16 +13,20 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.content.Context
-import android.graphics.Color
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.ColorUtils
-import androidx.fragment.app.Fragment
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
 	private lateinit var contactAdapter: ContactAdapter
 	private lateinit var dbHelper: ContactsDbHelper
+
+	companion object {
+		private const val PREFS_NAME = "app_state"
+		private const val KEY_BACKGROUND_TIMESTAMP = "background_timestamp"
+		private const val KEY_HAS_BEEN_BACKGROUND = "has_been_background"
+	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -31,6 +37,11 @@ class MainActivity : AppCompatActivity() {
 		setSupportActionBar(toolbar)
 
 		applyHeaderColorFromPrefs()
+
+		getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+			.edit()
+			.putBoolean(KEY_HAS_BEEN_BACKGROUND, false)
+			.apply()
 
 		supportFragmentManager.setFragmentResultListener(
 			ColorPickerDialogFragment.RESULT_KEY, this
@@ -57,6 +68,39 @@ class MainActivity : AppCompatActivity() {
 			startActivity(intent)
 		}
 		recyclerView.adapter = contactAdapter
+	}
+
+	override fun onStart() {
+		super.onStart()
+
+		val prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+		val hasBeenBackground = prefs.getBoolean(KEY_HAS_BEEN_BACKGROUND, false)
+		val timestamp = prefs.getLong(KEY_BACKGROUND_TIMESTAMP, -1L)
+
+		if (hasBeenBackground && timestamp != -1L) {
+			val formattedTime = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+				.format(Date(timestamp))
+
+			Toast.makeText(
+				this,
+				getString(R.string.background_time_toast, formattedTime),
+				Toast.LENGTH_SHORT
+			).show()
+
+			prefs.edit()
+				.putBoolean(KEY_HAS_BEEN_BACKGROUND, false)
+				.apply()
+		}
+	}
+
+	override fun onStop() {
+		super.onStop()
+
+		getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+			.edit()
+			.putLong(KEY_BACKGROUND_TIMESTAMP, System.currentTimeMillis())
+			.putBoolean(KEY_HAS_BEEN_BACKGROUND, true)
+			.apply()
 	}
 
 	override fun onResume() {
