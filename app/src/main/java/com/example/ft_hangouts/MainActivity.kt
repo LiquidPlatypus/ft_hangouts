@@ -25,7 +25,6 @@ class MainActivity : AppCompatActivity() {
 	companion object {
 		private const val PREFS_NAME = "app_state"
 		private const val KEY_BACKGROUND_TIMESTAMP = "background_timestamp"
-		private const val KEY_HAS_BEEN_BACKGROUND = "has_been_background"
 	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +39,6 @@ class MainActivity : AppCompatActivity() {
 
 		getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 			.edit()
-			.putBoolean(KEY_HAS_BEEN_BACKGROUND, false)
 			.apply()
 
 		supportFragmentManager.setFragmentResultListener(
@@ -73,11 +71,13 @@ class MainActivity : AppCompatActivity() {
 	override fun onStart() {
 		super.onStart()
 
+		val app = application as MyApplication
+		if (!app.consumeBackgroundReturnEvent()) return
+
 		val prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-		val hasBeenBackground = prefs.getBoolean(KEY_HAS_BEEN_BACKGROUND, false)
 		val timestamp = prefs.getLong(KEY_BACKGROUND_TIMESTAMP, -1L)
 
-		if (hasBeenBackground && timestamp != -1L) {
+		if (timestamp != -1L) {
 			val formattedTime = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
 				.format(Date(timestamp))
 
@@ -86,10 +86,6 @@ class MainActivity : AppCompatActivity() {
 				getString(R.string.background_time_toast, formattedTime),
 				Toast.LENGTH_SHORT
 			).show()
-
-			prefs.edit()
-				.putBoolean(KEY_HAS_BEEN_BACKGROUND, false)
-				.apply()
 		}
 	}
 
@@ -99,7 +95,6 @@ class MainActivity : AppCompatActivity() {
 		getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 			.edit()
 			.putLong(KEY_BACKGROUND_TIMESTAMP, System.currentTimeMillis())
-			.putBoolean(KEY_HAS_BEEN_BACKGROUND, true)
 			.apply()
 	}
 
