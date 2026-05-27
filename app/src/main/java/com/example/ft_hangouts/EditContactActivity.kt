@@ -3,6 +3,7 @@ package com.example.ft_hangouts
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ScrollView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -26,9 +27,26 @@ class EditContactActivity : AppCompatActivity() {
 		supportActionBar?.setDisplayShowHomeEnabled(true)
 		supportActionBar?.title = getString(R.string.edit)
 
+		val scroll = findViewById<ScrollView>(R.id.scroll_edit_contact)
+
 		ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.edit_contact_container)) { v, insets ->
 			val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-			v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+			val ime = insets.getInsets(WindowInsetsCompat.Type.ime())
+
+			v.setPadding(
+				systemBars.left,
+				systemBars.top,
+				systemBars.right,
+				systemBars.bottom
+			)
+
+			scroll.setPadding(
+				scroll.paddingLeft,
+				scroll.paddingTop,
+				scroll.paddingRight,
+				ime.bottom
+			)
+
 			insets
 		}
 

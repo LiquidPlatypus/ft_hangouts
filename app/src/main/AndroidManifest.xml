@@ -30,7 +30,8 @@
         </activity>
         <activity
             android:name=".EditContactActivity"
-            android:exported="false">
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize|stateHidden">
         </activity>
         <activity
             android:name=".ChatActivity"
