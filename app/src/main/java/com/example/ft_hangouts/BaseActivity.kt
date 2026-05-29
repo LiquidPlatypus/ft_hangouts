@@ -38,9 +38,11 @@ abstract class BaseActivity : AppCompatActivity() {
 	override fun onStop() {
 		super.onStop()
 
-		getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-			.edit()
-			.putLong(KEY_BACKGROUND_TIMESTAMP, System.currentTimeMillis())
-			.apply()
+		if (!isChangingConfigurations) {
+			getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+				.edit()
+				.putLong(KEY_BACKGROUND_TIMESTAMP, System.currentTimeMillis())
+				.apply()
+		}
 	}
 }

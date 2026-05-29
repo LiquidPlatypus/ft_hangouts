@@ -18,6 +18,9 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks {
 	fun consumeBackgroundReturnEvent(): Boolean {
 		val event = pendingBackgroundReturnEvent
 		pendingBackgroundReturnEvent = false
+		if (event) {
+			wasInBackground = false
+		}
 		return event
 	}
 
@@ -32,7 +35,9 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks {
 		startedActivities--
 		if (startedActivities <= 0) {
 			startedActivities = 0
-			wasInBackground = true
+			if (!activity.isChangingConfigurations) {
+				wasInBackground = true
+			}
 		}
 	}
 
