@@ -14,7 +14,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import android.graphics.Color
 import android.view.MenuItem
 
-class ChatActivity : AppCompatActivity() {
+class ChatActivity : BaseActivity() {
 
 	private var contactId: Long = 0L
 	private lateinit var messagesDb: MessageDbHelper

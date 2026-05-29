@@ -16,7 +16,7 @@ import android.widget.Toast
 import androidx.core.view.WindowInsetsControllerCompat
 import android.graphics.Color
 
-class ContactDetailActivity : AppCompatActivity() {
+class ContactDetailActivity : BaseActivity() {
 
 	private var contactId: Long = 0L
 	private lateinit var dbHelper: ContactsDbHelper

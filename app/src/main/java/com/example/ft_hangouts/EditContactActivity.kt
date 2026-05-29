@@ -11,7 +11,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
-class EditContactActivity : AppCompatActivity() {
+class EditContactActivity : BaseActivity() {
 
 	private lateinit var dbHelper: ContactsDbHelper
 	private var contactId: Long = 0L

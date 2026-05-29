@@ -7,7 +7,7 @@ import android.os.Bundle
 class MyApplication : Application(), Application.ActivityLifecycleCallbacks {
 
 	private var startedActivities = 0
-	private var hasBeenInBackground = false
+	private var wasInBackground = false
 	private var pendingBackgroundReturnEvent = false
 
 	override fun onCreate() {
@@ -22,8 +22,9 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks {
 	}
 
 	override fun onActivityStarted(activity: Activity) {
-		if (startedActivities == 0 && hasBeenInBackground)
+		if (startedActivities == 0 && wasInBackground) {
 			pendingBackgroundReturnEvent = true
+		}
 		startedActivities++
 	}
 
@@ -31,7 +32,7 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks {
 		startedActivities--
 		if (startedActivities <= 0) {
 			startedActivities = 0
-			hasBeenInBackground = true
+			wasInBackground = true
 		}
 	}
 

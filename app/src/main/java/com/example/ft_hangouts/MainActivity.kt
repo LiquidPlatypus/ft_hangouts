@@ -17,15 +17,10 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
 	private lateinit var contactAdapter: ContactAdapter
 	private lateinit var dbHelper: ContactsDbHelper
-
-	companion object {
-		private const val PREFS_NAME = "app_state"
-		private const val KEY_BACKGROUND_TIMESTAMP = "background_timestamp"
-	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -66,36 +61,6 @@ class MainActivity : AppCompatActivity() {
 			startActivity(intent)
 		}
 		recyclerView.adapter = contactAdapter
-	}
-
-	override fun onStart() {
-		super.onStart()
-
-		val app = application as MyApplication
-		if (!app.consumeBackgroundReturnEvent()) return
-
-		val prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-		val timestamp = prefs.getLong(KEY_BACKGROUND_TIMESTAMP, -1L)
-
-		if (timestamp != -1L) {
-			val formattedTime = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
-				.format(Date(timestamp))
-
-			Toast.makeText(
-				this,
-				getString(R.string.background_time_toast, formattedTime),
-				Toast.LENGTH_SHORT
-			).show()
-		}
-	}
-
-	override fun onStop() {
-		super.onStop()
-
-		getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-			.edit()
-			.putLong(KEY_BACKGROUND_TIMESTAMP, System.currentTimeMillis())
-			.apply()
 	}
 
 	override fun onResume() {
